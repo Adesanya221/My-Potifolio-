@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { AboutSidebar } from "@/components/AboutSidebar";
+import { NewsWidget } from "@/components/NewsWidget";
+import { Separator } from "@/components/ui/separator";
 
 const Index = () => {
   const [time, setTime] = useState(new Date());
@@ -50,6 +52,8 @@ const Index = () => {
           <p className="text-3xl font-bold font-mono">
             {time.toLocaleTimeString()}
           </p>
+          <Separator className="my-4 bg-gray-700" />
+          <NewsWidget />
         </div>
 
         {/* Contact Card */}

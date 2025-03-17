@@ -1,11 +1,13 @@
 
 import { useState, useEffect } from "react";
-import { Loader2, Rss } from "lucide-react";
+import { Rss } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface NewsItem {
   title: string;
   url: string;
+  imageUrl: string;
 }
 
 export const NewsWidget = () => {
@@ -25,11 +27,31 @@ export const NewsWidget = () => {
         
         // Simulating API response with mock data
         const mockNews: NewsItem[] = [
-          { title: "AI breakthrough enables more efficient language processing", url: "#" },
-          { title: "New React framework promises faster rendering times", url: "#" },
-          { title: "Quantum computing reaches major milestone", url: "#" },
-          { title: "Tech giants announce collaboration on open-source project", url: "#" },
-          { title: "New cybersecurity measures implemented across industries", url: "#" },
+          { 
+            title: "AI breakthrough enables more efficient language processing", 
+            url: "#",
+            imageUrl: "https://images.unsplash.com/photo-1677442135144-61c28a4d8cb1?q=80&w=300&auto=format&fit=crop"
+          },
+          { 
+            title: "New React framework promises faster rendering times", 
+            url: "#",
+            imageUrl: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=300&auto=format&fit=crop"
+          },
+          { 
+            title: "Quantum computing reaches major milestone", 
+            url: "#",
+            imageUrl: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=300&auto=format&fit=crop"
+          },
+          { 
+            title: "Tech giants announce collaboration on open-source project", 
+            url: "#",
+            imageUrl: "https://images.unsplash.com/photo-1629752187687-3d3c7ea3a21b?q=80&w=300&auto=format&fit=crop"
+          },
+          { 
+            title: "New cybersecurity measures implemented across industries", 
+            url: "#",
+            imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=300&auto=format&fit=crop"
+          },
         ];
         
         setTimeout(() => {
@@ -68,9 +90,10 @@ export const NewsWidget = () => {
         <span className="text-sm font-semibold">TECH NEWS</span>
       </div>
       
-      <div className="h-16 overflow-hidden relative">
+      <div className="h-48 overflow-hidden relative">
         {loading ? (
           <div className="space-y-2">
+            <Skeleton className="h-28 w-full bg-gray-700" />
             <Skeleton className="h-4 w-full bg-gray-700" />
             <Skeleton className="h-4 w-2/3 bg-gray-700" />
           </div>
@@ -86,11 +109,22 @@ export const NewsWidget = () => {
             >
               <a 
                 href={item.url} 
-                className="text-gray-300 hover:text-white hover:underline line-clamp-2" 
+                className="block hover:opacity-90 transition-opacity" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                {item.title}
+                <div className="mb-2">
+                  <AspectRatio ratio={16/9} className="bg-gray-800 rounded-md overflow-hidden">
+                    <img 
+                      src={item.imageUrl} 
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </AspectRatio>
+                </div>
+                <p className="text-gray-300 hover:text-white hover:underline line-clamp-2">
+                  {item.title}
+                </p>
               </a>
             </div>
           ))

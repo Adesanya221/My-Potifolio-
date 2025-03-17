@@ -47,7 +47,7 @@ const Index = () => {
         </div>
 
         {/* Time Card */}
-        <div className="bento-card">
+        <div className="bento-card row-span-2">
           <h2 className="text-lg text-gray-400 mb-4">Current Time</h2>
           <p className="text-3xl font-bold font-mono">
             {time.toLocaleTimeString()}

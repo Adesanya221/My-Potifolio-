@@ -1,0 +1,906 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #121212;
+  --background-alt: #1a1a1a;
+  --card: #252525;
+  --foreground: #ffffff;
+  --primary: #3b82f6;
+  --muted: #9ca3af;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, 
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Improved focus styles for accessibility */
+a:focus, 
+button:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1025px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Section alternating backgrounds */
+section:nth-of-type(even) {
+  background-color: var(--background);
+}
+
+section:nth-of-type(odd) {
+  background-color: var(--background-alt);
+}
+
+/* Smooth transitions */
+a, button {
+  transition: all 0.3s ease;
+}
+
+/* Portfolio item hover effect */
+.portfolio-item {
+  overflow: hidden;
+}
+
+.portfolio-item img {
+  transition: transform 0.5s ease;
+}
+
+.portfolio-item:hover img {
+  transform: scale(1.1);
+}
+
+.portfolio-item .overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-item:hover .overlay {
+  opacity: 1;
+}
+
+/* Navigation animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Active section indicator animation */
+nav button span {
+  transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
+}
+
+/* Smooth section transitions */
+section {
+  transition: opacity 0.5s ease;
+}
+
+/* Page section animations */
+section {
+  animation: sectionFadeIn 0.8s ease forwards;
+  opacity: 0;
+}
+
+@keyframes sectionFadeIn {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for children */
+section > div > * {
+  animation: staggeredFadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes staggeredFadeIn {
+  from { 
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add animation delay for staggered children */
+section > div > *:nth-child(1) { animation-delay: 0.1s; }
+section > div > *:nth-child(2) { animation-delay: 0.2s; }
+section > div > *:nth-child(3) { animation-delay: 0.3s; }
+section > div > *:nth-child(4) { animation-delay: 0.4s; }
+section > div > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* Enhanced Navigation Animations */
+.nav-item {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary), #60a5fa, #3b82f6);
+  z-index: -1;
+  transform: scale(0);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  opacity: 0;
+}
+
+.nav-item:hover::before {
+  transform: scale(1);
+  opacity: 0.15;
+}
+
+.nav-item:hover .nav-glow {
+  opacity: 0.2;
+}
+
+.nav-item:active {
+  transform: scale(0.95);
+}
+
+/* Animated underline effect */
+.nav-item span {
+  transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
+}
+
+.nav-item:hover span:first-of-type {
+  transform: scaleX(1) !important;
+  opacity: 1;
+}
+
+/* Floating animation for active nav item */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+}
+
+.nav-item.active {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Pulse animation for active nav item */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+/* 3D hover effect */
+.nav-item {
+  transition: transform 0.3s ease;
+}
+
+.nav-item:hover {
+  transform: perspective(500px) translateZ(10px);
+}
+
+/* Text shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+.nav-item.active {
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  -webkit-background-clip: text;
+}
+
+/* Mobile navigation animations */
+.mobile-nav-item {
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.95);
+  background-color: var(--primary);
+}
+
+/* Hero section animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+  from { 
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from { 
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease forwards;
+}
+
+.animate-slideInFromLeft {
+  animation: slideInFromLeft 1s ease forwards;
+}
+
+.animate-slideInFromRight {
+  animation: slideInFromRight 1s ease forwards;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Video background styles */
+video {
+  filter: brightness(0.7);
+}
+
+/* Improve text readability over video */
+#home h1, #home h2, #home p {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile menu animations */
+@keyframes slideDown {
+  from { 
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to { 
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8) translateY(10px);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.05) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Enhanced mobile nav item animations */
+.mobile-nav-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.mobile-nav-item:hover::after {
+  transform: scaleX(1);
+}
+
+/* Hamburger menu animation */
+.hamburger-icon {
+  transition: transform 0.3s ease;
+}
+
+.hamburger-icon.open {
+  transform: rotate(90deg);
+}
+
+/* Menu backdrop overlay */
+.menu-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* Welcome screen animation */
+.welcome-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.welcome-content {
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.welcome-text {
+  font-size: 3rem;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.welcome-text.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.welcome-subtext {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  color: var(--primary);
+}
+
+.welcome-subtext.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.welcome-loader {
+  margin-top: 2rem;
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.loader-bar {
+  height: 100%;
+  width: 0;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 2.5s cubic-bezier(0.1, 0.5, 0.1, 1);
+}
+
+.welcome-loader.complete .loader-bar {
+  width: 100%;
+}
+
+/* Main content animation */
+.main-content {
+  animation: fadeInPage 1s ease forwards;
+}
+
+@keyframes fadeInPage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Particle background for welcome screen */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: float 15s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-30px) translateX(30px);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-15px);
+  }
+  75% {
+    transform: translateY(30px) translateX(15px);
+  }
+}
+
+/* Enter button styles */
+.enter-button {
+  margin-top: 2.5rem;
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInButton 0.8s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeInButton {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enter-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--primary);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s ease;
+}
+
+.enter-button:hover {
+  color: white;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.enter-button:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.enter-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.enter-button:hover .enter-icon {
+  transform: translateX(5px);
+}
+
+.enter-button:active {
+  transform: scale(0.98);
+}
+
+/* Fade out animation for welcome screen */
+.welcome-screen.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Pulse animation for enter button */
+.enter-button {
+  animation: fadeInButton 0.8s ease forwards, pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Loading animation styles */
+.loading-container {
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.loading-container.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.progress-container {
+  width: 250px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--primary), #60a5fa);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.loading-percentage {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  font-family: monospace;
+}
+
+/* Loading icons animation */
+.loading-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.loading-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+  animation: iconPulse 2s infinite;
+}
+
+.loading-icon.html {
+  animation-delay: 0s;
+}
+
+.loading-icon.css {
+  animation-delay: 0.5s;
+}
+
+.loading-icon.js {
+  animation-delay: 1s;
+}
+
+.loading-icon.react {
+  animation-delay: 1.5s;
+}
+
+@keyframes iconPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+/* Spinner animation */
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 1rem auto;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Update enter button to appear after loading */
+.enter-button {
+  margin-top: 2rem;
+}
+
+/* Hero background image enhancements */
+#home img {
+  filter: brightness(0.8);
+  transition: transform 15s ease;
+}
+
+/* Optional: Subtle zoom effect on page load */
+.main-content.loaded #home img {
+  transform: scale(1.05);
+}
+
+/* Improve text readability over background image */
+#home h1, #home h2, #home p {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* CV download button animation */
+.download-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.download-btn:hover svg {
+  transform: translateY(3px);
+}
+
+.download-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.download-btn::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.download-btn:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Download spinner animation */
+.download-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+.downloading {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  pointer-events: none;
+}
+
+/* Project card hover effects */
+.project-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.project-card .project-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+.project-card .view-project {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.project-card:hover .view-project {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.project-card .project-image {
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.1);
+}
+
+/* Skills Carousel Styles */
+.skills-carousel-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.skills-carousel {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.skills-track {
+  display: flex;
+  width: 100%;
+}
+
+.skill-card {
+  width: 100%;
+  flex-shrink: 0;
+  padding: 1rem;
+}
+
+/* Skill Graph Animation */
+.skill-graph .rounded-full div {
+  animation: skillBarFill 1.5s ease-out forwards;
+  width: 0;
+}
+
+@keyframes skillBarFill {
+  from { width: 0; }
+  to { width: var(--skill-level); }
+}
+
+/* Skill Timeline Animation */
+.skill-timeline path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 2s ease-out forwards;
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Carousel Navigation */
+.skills-carousel-container button {
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.skills-carousel-container button:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Skill indicator dots */
+.skills-carousel-container .indicator-dots button {
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Add this to your global.css file */
+.skill-card img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.skill-card:hover img {
+  transform: scale(1.2);
+}
+
+/* Icon loading animation */
+@keyframes iconPulse {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.skill-card img {
+  animation: iconPulse 0.5s ease-out forwards;
+}
+
+/* Add this to your global.css file */
+.skill-card img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.skill-card:hover img {
+  transform: scale(1.2);
+}
+
+/* Icon loading animation */
+@keyframes iconPulse {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.skill-card img {
+  animation: iconPulse 0.5s ease-out forwards;
+} 

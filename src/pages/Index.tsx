@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { AboutSidebar } from "@/components/AboutSidebar";
 
 const Index = () => {
   const [time, setTime] = useState(new Date());
@@ -8,6 +10,10 @@ const Index = () => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  // About me content
+  const aboutContent = "I specialize in building modern web applications using React, TypeScript, and other cutting-edge technologies.";
+  const tools = ["React", "TypeScript", "Node.js", "Tailwind CSS"];
 
   return (
     <div className="min-h-screen bg-[#121212] text-white">
@@ -24,20 +30,18 @@ const Index = () => {
         </div>
 
         {/* About Card */}
-        <div className="bento-card row-span-2">
-          <h2 className="text-2xl font-bold mb-6">About me</h2>
-          <p className="text-gray-300 text-lg mb-6">
-            I specialize in building modern web applications using React, TypeScript, and other cutting-edge technologies.
-          </p>
-          <div className="space-y-4">
-            <p className="text-lg text-gray-400">My tools:</p>
-            <ul className="list-disc list-inside text-gray-300 text-lg space-y-2">
-              <li>React</li>
-              <li>TypeScript</li>
-              <li>Node.js</li>
-              <li>Tailwind CSS</li>
-            </ul>
+        <div className="bento-card row-span-2 flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold">About me</h2>
+            <AboutSidebar 
+              title="About me"
+              content={aboutContent}
+              tools={tools}
+            />
           </div>
+          <p className="text-gray-300 text-lg">
+            Click the info icon to learn more about me and my skills.
+          </p>
         </div>
 
         {/* Time Card */}

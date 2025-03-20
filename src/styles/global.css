@@ -602,33 +602,49 @@ video {
 }
 
 .loading-text {
-  font-size: 1rem;
-  color: var(--muted);
-  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #f5f5f5;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 .progress-container {
-  width: 250px;
-  height: 6px;
+  width: 280px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .progress-bar {
   height: 100%;
   width: 0;
-  background: linear-gradient(90deg, var(--primary), #60a5fa);
-  border-radius: 6px;
+  background: linear-gradient(90deg, #2ecc71, #4ade80);
+  border-radius: 8px;
   transition: width 0.3s ease;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+  animation: pulseGreen 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+  }
 }
 
 .loading-percentage {
-  font-size: 0.875rem;
-  color: var(--muted);
-  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #2ecc71;
+  margin-top: 0.75rem;
   font-family: monospace;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
 /* Loading icons animation */

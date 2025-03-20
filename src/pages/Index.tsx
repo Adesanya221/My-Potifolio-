@@ -37,16 +37,35 @@ const Index = () => {
   });
   const [formStatus, setFormStatus] = useState({ loading: false, success: null, error: null });
 
+  // Add this to component state
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  const projectCarouselRef = useRef<HTMLDivElement>(null);
+
   // Simulate loading progress
   useEffect(() => {
-    const loadingInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        const newProgress = prev + Math.random() * 15;
-        return newProgress > 100 ? 100 : newProgress;
-      });
-    }, []);
+    let animationFrame: number;
+    let startTime: number | null = null;
+    const duration = 5000; // 5 seconds to complete
     
-    return () => clearInterval(loadingInterval);
+    const animateProgress = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration * 100, 100);
+      
+      setLoadingProgress(progress);
+      
+      if (progress < 100) {
+        animationFrame = requestAnimationFrame(animateProgress);
+      }
+    };
+    
+    animationFrame = requestAnimationFrame(animateProgress);
+    
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
   }, []);
 
   // Update the welcome animation sequence
@@ -203,7 +222,7 @@ const Index = () => {
     
     if (isIOS || isSafari) {
       e.preventDefault();
-      window.open('/assets/profile/cv.pdf', '_blank');
+      window.open('/assets/profile/CV.pdf', '_blank');
     }
     
     // Reset the downloading state after a short delay
@@ -229,25 +248,25 @@ const Index = () => {
     },
     {
       id: 2,
-      title: "Social Media Dashboard",
-      description: "Analytics and management for social accounts",
-      image: "/assets/projects/project-2.jpg",
-      url: "https://github.com/Adesanya221/project2", // Replace with your actual project URL
-      technologies: ["React", "Chart.js"]
+      title: "crypto-dashboard",
+      description: "A dashboard for crypto currency",
+      image: "/assets/projects/project-3.jpg",
+      url: "https://crypto-frontend-5bd9a.web.app", // Replace with your actual project URL
+      technologies: ["React", "TypeScript", "css", "firebase", "Chart.js"]
     },
     {
       id: 3,
-      title: "Task Management App",
-      description: "Organize and track your daily tasks",
-      image: "/assets/projects/project-3.jpg",
-      url: "https://github.com/Adesanya221/project3", // Replace with your actual project URL
-      technologies: ["React", "Firebase"]
+      title: "potifolio",
+      description: "A portfolio website for a software developer using fundamentals of html, css and javascript",
+      image: "/assets/projects/project-2.jpg",
+      url: "https://adesanya221.github.io/Adesanya-oluwafisayomi-s-Potifolio/", // Fixed URL formatting
+      technologies: ["html", "css", "javascript", "github"]
     },
     {
       id: 4,
       title: "Weather Forecast App",
       description: "Real-time weather updates and forecasts",
-      image: "/assets/projects/project-4.jpg",
+      image: "/assets/projects/project-1.jpg",
       url: "https://github.com/Adesanya221/project4", // Replace with your actual project URL
       technologies: ["JavaScript", "Weather API"]
     },
@@ -255,7 +274,7 @@ const Index = () => {
       id: 5,
       title: "Recipe Finder",
       description: "Discover and save your favorite recipes",
-      image: "/assets/projects/project-5.jpg",
+      image: "/assets/projects/project-1.jpg",
       url: "https://github.com/Adesanya221/project5", // Replace with your actual project URL
       technologies: ["React", "Food API"]
     },
@@ -263,7 +282,7 @@ const Index = () => {
       id: 6,
       title: "Portfolio Website",
       description: "Showcase your work with this template",
-      image: "/assets/projects/project-6.jpg",
+      image: "/assets/projects/project-1.jpg",
       url: "https://github.com/Adesanya221/portfolio", // Replace with your actual project URL
       technologies: ["React", "TypeScript"]
     }
@@ -392,6 +411,24 @@ const Index = () => {
       setFormStatus({ loading: false, success: null, error: "An unexpected error occurred." });
     }
   };
+
+  // Add these functions for the project carousel
+  const nextProject = () => {
+    setActiveProjectIndex((prev) => (prev + 1) % (projects.length - 2));
+  };
+
+  const prevProject = () => {
+    setActiveProjectIndex((prev) => (prev - 1 + (projects.length - 2)) % (projects.length - 2));
+  };
+
+  // Add this effect for auto-rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextProject();
+    }, 5000); // Change project every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
 
   if (showWelcome) {
     return (
@@ -688,14 +725,14 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-6 bg-[#1a1a1a]">
+      <section id="about" className="py-16 md:py-20 px-6 bg-[#1a1a1a]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 md:mb-12">
             <h2 className="text-sm md:text-base text-gray-400 mb-2">About</h2>
-            <h1 className="text-3xl md:text-4xl font-bold">Just a little introduction...</h1>
+            <h1 className="text-2xl md:text-4xl font-bold">Just a little introduction...</h1>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <div className="md:col-span-1">
               <div className="relative">
                 <img 
@@ -703,16 +740,16 @@ const Index = () => {
                   alt="ADESANYA IGNATIUS" 
                   className="w-full h-auto rounded-xl"
                 />
-                <div className="absolute -bottom-4 -right-4 bg-blue-500 text-white px-6 py-2 rounded-lg">
+                <div className="absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 bg-blue-500 text-white px-3 md:px-6 py-1 md:py-2 rounded-lg text-sm md:text-base">
                   Software Developer
                 </div>
               </div>
             </div>
             
-            <div className="md:col-span-1 space-y-8">
+            <div className="md:col-span-1 space-y-6 md:space-y-8">
               <div>
-                <h3 className="text-2xl font-bold mb-4">Profile</h3>
-                <ul className="space-y-2">
+                <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Profile</h3>
+                <ul className="space-y-2 text-sm md:text-base">
                   <li><strong>Fullname:</strong> ADESANYA OLUWAFISAYOMI IGNATIUS</li>
                   <li><strong>Job:</strong> Software Developer</li>
                   <li><strong>Email:</strong> Adesanyafisayo112@email.com</li>
@@ -721,7 +758,7 @@ const Index = () => {
               
               {/* Skills Carousel */}
               <div>
-                <h3 className="text-2xl font-bold mb-6">Skills</h3>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Skills</h3>
                 
                 <div className="skills-carousel-container relative">
                   {/* Navigation Arrows */}
@@ -744,7 +781,7 @@ const Index = () => {
                   {/* Skills Carousel */}
                   <div 
                     ref={skillsCarouselRef}
-                    className="skills-carousel overflow-hidden rounded-xl bg-[#1E1E1E] p-6"
+                    className="skills-carousel overflow-hidden rounded-xl bg-[#1E1E1E] p-4 md:p-6"
                   >
                     <div 
                       className="skills-track flex transition-transform duration-500 ease-out"
@@ -752,30 +789,30 @@ const Index = () => {
                     >
                       {skillsData.map((skill, index) => (
                         <div key={index} className="skill-card w-full flex-shrink-0 flex flex-col">
-                          <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center justify-between mb-3 md:mb-4">
                             <div className="flex items-center">
                               <div 
-                                className="w-12 h-12 rounded-full flex items-center justify-center mr-3"
+                                className="w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center mr-2 md:mr-3"
                                 style={{ backgroundColor: `${skill.color}20` }}
                               >
                                 <img 
                                   src={skill.icon} 
                                   alt={`${skill.name} logo`} 
-                                  className="w-8 h-8 object-contain" 
+                                  className="w-5 h-5 md:w-8 md:h-8 object-contain" 
                                   onError={(e) => {
                                     // Fallback if image fails to load
                                     e.currentTarget.src = "/placeholder.svg";
                                   }}
                                 />
                               </div>
-                              <h4 className="text-xl font-bold">{skill.name}</h4>
+                              <h4 className="text-base md:text-xl font-bold">{skill.name}</h4>
                             </div>
-                            <div className="text-2xl font-bold" style={{ color: skill.color }}>{skill.level}%</div>
+                            <div className="text-lg md:text-2xl font-bold" style={{ color: skill.color }}>{skill.level}%</div>
                           </div>
                           
                           {/* Skill Graph */}
-                          <div className="skill-graph mb-4">
-                            <div className="w-full bg-gray-700 rounded-full h-2 mb-6">
+                          <div className="skill-graph mb-3 md:mb-4">
+                            <div className="w-full bg-gray-700 rounded-full h-2 mb-3 md:mb-6">
                               <div 
                                 className="h-2 rounded-full transition-all duration-1000 ease-out"
                                 style={{ 
@@ -787,22 +824,22 @@ const Index = () => {
                             </div>
                             
                             {/* Skill Metrics */}
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                              <div className="bg-[#252525] p-3 rounded-lg">
-                                <div className="text-gray-400 text-sm">Experience</div>
-                                <div className="text-lg font-medium">{skill.experience}</div>
+                            <div className="grid grid-cols-2 gap-2 md:gap-4 mb-3 md:mb-4">
+                              <div className="bg-[#252525] p-2 md:p-3 rounded-lg">
+                                <div className="text-gray-400 text-xs md:text-sm">Experience</div>
+                                <div className="text-sm md:text-lg font-medium">{skill.experience}</div>
                               </div>
-                              <div className="bg-[#252525] p-3 rounded-lg">
-                                <div className="text-gray-400 text-sm">Projects</div>
-                                <div className="text-lg font-medium">{skill.projects}</div>
+                              <div className="bg-[#252525] p-2 md:p-3 rounded-lg">
+                                <div className="text-gray-400 text-xs md:text-sm">Projects</div>
+                                <div className="text-sm md:text-lg font-medium">{skill.projects}</div>
                               </div>
                             </div>
                             
-                            <p className="text-gray-300">{skill.description}</p>
+                            <p className="text-xs md:text-base text-gray-300">{skill.description}</p>
                           </div>
                           
                           {/* Skill Timeline (resembles crypto chart) */}
-                          <div className="skill-timeline mt-auto h-16 relative">
+                          <div className="skill-timeline mt-auto h-12 md:h-16 relative">
                             <svg className="w-full h-full" viewBox="0 0 300 60">
                               <defs>
                                 <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -865,13 +902,14 @@ const Index = () => {
                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md transition-colors">
                   Hire Me
                 </a>
-                <a 
-                  href="/assets/profile/cv.pdf" 
+                <a
+                  className={`flex items-center gap-2 bg-gray-800 text-white py-2 px-4 rounded-lg font-semibold tracking-wider transition-all ${
+                    isDownloading ? 'opacity-70 pointer-events-none' : 'hover:bg-gray-700'
+                  }`}
+                  href="/assets/profile/CV.pdf"
                   download="ADESANYA_IGNATIUS_CV.pdf"
                   onClick={handleDownload}
-                  className={`border border-white hover:bg-white hover:text-black px-6 py-3 rounded-md transition-colors flex items-center relative download-btn ${isDownloading ? 'downloading' : ''}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onError={handleDownloadError}
                 >
                   {isDownloading ? (
                     <>
@@ -894,16 +932,17 @@ const Index = () => {
       </section>
 
       {/* Portfolio Section */}
-      <section id="portfolio" className="py-20 px-6">
+      <section id="portfolio" className="py-16 md:py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 md:mb-12">
             <h2 className="text-sm md:text-base text-gray-400 mb-2">Portfolio</h2>
-            <h1 className="text-3xl md:text-4xl font-bold">Check Out Some of My Projects.</h1>
-            <p className="text-gray-300 mt-4">Take a peek at a few of my projects and see the magic happen!</p>
+            <h1 className="text-2xl md:text-4xl font-bold">Check Out Some of My Projects.</h1>
+            <p className="text-gray-300 mt-3 md:mt-4 text-sm md:text-base">Take a peek at a few of my projects and see the magic happen!</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
+          {/* First two projects in grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-10 md:mb-16">
+            {projects.slice(0, 2).map((project) => (
               <div key={project.id} className="project-card group">
                 <a 
                   href={project.url} 
@@ -938,71 +977,154 @@ const Index = () => {
               </div>
             ))}
           </div>
+          
+          {/* Projects 3+ in carousel */}
+          <h3 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 text-center">Featured Projects</h3>
+          <div className="project-carousel-container relative">
+            {/* Navigation Arrows */}
+            <button 
+              onClick={prevProject}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-[#252525] p-3 rounded-full hover:bg-blue-500 transition-colors"
+              aria-label="Previous project"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            
+            <button 
+              onClick={nextProject}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-[#252525] p-3 rounded-full hover:bg-blue-500 transition-colors"
+              aria-label="Next project"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+            
+            {/* Projects Carousel */}
+            <div 
+              ref={projectCarouselRef}
+              className="project-carousel overflow-hidden rounded-xl bg-[#1E1E1E] h-[300px] md:h-[500px]"
+            >
+              <div 
+                className="project-track flex transition-transform duration-500 ease-out h-full"
+                style={{ transform: `translateX(-${activeProjectIndex * 100}%)` }}
+              >
+                {projects.slice(2).map((project, index) => (
+                  <div key={project.id} className="project-card-carousel w-full flex-shrink-0 h-full">
+                    <a 
+                      href={project.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="block h-full"
+                      aria-label={`View ${project.title} project`}
+                    >
+                      <div className="relative h-full overflow-hidden">
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="carousel-image w-full h-full object-cover"
+                        />
+                        <div className="carousel-overlay absolute inset-0 flex flex-col justify-end p-4 md:p-8 bg-gradient-to-t from-black/80 to-transparent">
+                          <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3 text-white">{project.title}</h3>
+                          <p className="text-gray-300 mb-3 md:mb-5 text-sm md:text-lg max-w-3xl">{project.description}</p>
+                          <div className="flex flex-wrap gap-1 md:gap-2 mb-3 md:mb-5">
+                            {project.technologies.map((tech, index) => (
+                              <span key={index} className="bg-blue-500/30 text-blue-400 px-2 md:px-4 py-1 md:py-1.5 rounded-full text-xs md:text-sm">{tech}</span>
+                            ))}
+                          </div>
+                          <div className="view-project flex items-center text-blue-400 bg-[#1a1a1a]/60 w-fit px-3 md:px-5 py-2 md:py-3 rounded-lg backdrop-blur-sm hover:bg-[#1a1a1a] transition-all text-sm md:text-base">
+                            <span>View Project</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Project Indicators */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {projects.slice(2).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveProjectIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === activeProjectIndex 
+                      ? 'bg-blue-500 w-8' 
+                      : 'bg-gray-600 hover:bg-gray-500'
+                  }`}
+                  aria-label={`Go to project ${index + 3}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-6 bg-[#1a1a1a]">
+      <section id="contact" className="py-16 md:py-20 px-6 bg-[#1a1a1a]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 md:mb-12">
             <h2 className="text-sm md:text-base text-gray-400 mb-2">Contact</h2>
-            <h1 className="text-3xl md:text-4xl font-bold">I'd Love To Hear From You.</h1>
-            <p className="text-gray-300 mt-4">Let's connect! Feel free to reach out with any inquiries.</p>
+            <h1 className="text-2xl md:text-4xl font-bold">I'd Love To Hear From You.</h1>
+            <p className="text-gray-300 mt-3 md:mt-4 text-sm md:text-base">Let's connect! Feel free to reach out with any inquiries.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2 bg-[#252525] p-8 rounded-xl">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="md:col-span-2 bg-[#252525] p-5 md:p-8 rounded-xl">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">Name</label>
+                    <label htmlFor="name" className="block text-xs md:text-sm font-medium text-gray-400 mb-1">Name</label>
                     <input 
                       type="text" 
                       id="name" 
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full bg-[#333] border-0 rounded-md p-3 text-white focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-[#333] border-0 rounded-md p-2 md:p-3 text-sm md:text-base text-white focus:ring-2 focus:ring-blue-500"
                       placeholder="Your Name"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">Email</label>
+                    <label htmlFor="email" className="block text-xs md:text-sm font-medium text-gray-400 mb-1">Email</label>
                     <input 
                       type="email" 
                       id="email" 
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full bg-[#333] border-0 rounded-md p-3 text-white focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-[#333] border-0 rounded-md p-2 md:p-3 text-sm md:text-base text-white focus:ring-2 focus:ring-blue-500"
                       placeholder="Your Email"
                       required
                     />
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-400 mb-1">Subject</label>
+                  <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-gray-400 mb-1">Subject</label>
                   <input 
                     type="text" 
                     id="subject" 
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="w-full bg-[#333] border-0 rounded-md p-3 text-white focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-[#333] border-0 rounded-md p-2 md:p-3 text-sm md:text-base text-white focus:ring-2 focus:ring-blue-500"
                     placeholder="Subject"
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-1">Message</label>
+                  <label htmlFor="message" className="block text-xs md:text-sm font-medium text-gray-400 mb-1">Message</label>
                   <textarea 
                     id="message" 
                     name="message"
                     rows={6}
                     value={formData.message}
                     onChange={handleInputChange}
-                    className="w-full bg-[#333] border-0 rounded-md p-3 text-white focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-[#333] border-0 rounded-md p-2 md:p-3 text-sm md:text-base text-white focus:ring-2 focus:ring-blue-500"
                     placeholder="Your Message"
                     required
                   ></textarea>
@@ -1010,54 +1132,54 @@ const Index = () => {
                 <button 
                   type="submit" 
                   disabled={formStatus.loading}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md transition-colors w-full"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-md transition-colors w-full text-sm md:text-base"
                 >
                   {formStatus.loading ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>
             
-            <div className="space-y-8">
-              <div className="bg-[#252525] p-6 rounded-xl">
-                <h3 className="text-xl font-bold mb-4">Where to find me</h3>
-                <div className="flex items-center text-gray-300">
-                  <MapPin className="w-5 h-5 text-blue-400 mr-2" />
+            <div className="space-y-4 md:space-y-8">
+              <div className="bg-[#252525] p-4 md:p-6 rounded-xl">
+                <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">Where to find me</h3>
+                <div className="flex items-center text-gray-300 text-sm md:text-base">
+                  <MapPin className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mr-2" />
                   <p>Lagos, Nigeria</p>
                 </div>
               </div>
               
-              <div className="bg-[#252525] p-6 rounded-xl">
-                <h3 className="text-xl font-bold mb-4">Email Me At</h3>
-                <div className="flex items-center text-gray-300">
-                  <Mail className="w-5 h-5 text-blue-400 mr-2" />
-                  <p>adesanyafisayo112@email.com</p>
+              <div className="bg-[#252525] p-4 md:p-6 rounded-xl">
+                <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">Email Me At</h3>
+                <div className="flex items-center text-gray-300 text-sm md:text-base">
+                  <Mail className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mr-2" />
+                  <p className="break-all">adesanyafisayo112@email.com</p>
                 </div>
               </div>
               
-              <div className="bg-[#252525] p-6 rounded-xl">
-                <h3 className="text-xl font-bold mb-4">Call Me At</h3>
-                <div className="flex items-center text-gray-300">
-                  <Phone className="w-5 h-5 text-blue-400 mr-2" />
+              <div className="bg-[#252525] p-4 md:p-6 rounded-xl">
+                <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">Call Me At</h3>
+                <div className="flex items-center text-gray-300 text-sm md:text-base">
+                  <Phone className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mr-2" />
                   <p>Mobile: (+234) 8138784682</p>
                 </div>
               </div>
               
-              <div className="flex space-x-4">
+              <div className="flex space-x-3 md:space-x-4">
                 <a href="https://github.com/Adesanya221" target="_blank" rel="noopener noreferrer" 
-                  className="p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
-                  <Github className="w-6 h-6" />
+                  className="p-3 md:p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
+                  <Github className="w-5 h-5 md:w-6 md:h-6" />
                 </a>
                 <a href="https://www.linkedin.com/in/oluwafisayomi-adesanya-09452922b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer"
-                  className="p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
-                  <Linkedin className="w-6 h-6" />
+                  className="p-3 md:p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
+                  <Linkedin className="w-5 h-5 md:w-6 md:h-6" />
                 </a>
                 <a href="mailto:adesanyafisayo112@email.com"
-                  className="p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
-                  <Mail className="w-6 h-6" />
+                  className="p-3 md:p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
+                  <Mail className="w-5 h-5 md:w-6 md:h-6" />
                 </a>
                 <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                  className="p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
-                  <Twitter className="w-6 h-6" />
+                  className="p-3 md:p-4 bg-[#252525] rounded-full hover:bg-blue-500 transition-colors">
+                  <Twitter className="w-5 h-5 md:w-6 md:h-6" />
                 </a>
               </div>
             </div>
@@ -1066,7 +1188,7 @@ const Index = () => {
       </section>
       
       {/* Footer */}
-      <footer className="py-6 px-6 text-center text-gray-400">
+      <footer className="py-4 md:py-6 px-6 text-center text-gray-400 text-sm">
         <p>© Copyright {new Date().getFullYear()}</p>
       </footer>
     </div>
